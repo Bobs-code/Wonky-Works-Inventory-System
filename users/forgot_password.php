@@ -58,7 +58,15 @@ if (Input::get('forgotten_password')) {
     $validate = new Validate();
     $msg1 = lang("GEN_EMAIL");
 
-    $validation = $validate->check($_POST,array('email' => array('display' => $msg1,'valid_email' => true,'required' => true,),));
+    $validation = $validate->check(
+      $_POST,
+      array(
+         'email' => array(
+            'display' => $msg1,
+            'valid_email' => true,
+            'required' => true,),
+         )
+      );
 
     includeHook($hooks,'post');
     if(isset($hookData['validation'])){

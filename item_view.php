@@ -16,11 +16,9 @@ if ($_GET['id'] == 1) {
    $inv_title = "Miscellaneous";
 }
 
-$category = $db->query("SELECT * FROM `item_categories` WHERE id = ?", [$item_id])->results();
-
-
-$category_inventory = $db->query("SELECT * FROM `item_list` WHERE `item_category` = ? and user_id = ?", [$item_id, $user->data()->id])->results();
-$inventory_count = $db->query("SELECT * FROM `item_list` WHERE `item_category` = ? and user_id = ?", [$item_id, $user->data()->id])->count();
+$categoryView = $db->query("SELECT * FROM `item_categories` WHERE id = ?", [$item_id])->results();
+$categoryInventoryView = $db->query("SELECT * FROM `item_list` WHERE `item_category` = ? and user_id = ?", [$item_id, $user->data()->id])->results();
+$inventoryCountView = $db->query("SELECT * FROM `item_list` WHERE `item_category` = ? and user_id = ?", [$item_id, $user->data()->id])->count();
 
 
 ?>
@@ -40,7 +38,7 @@ $inventory_count = $db->query("SELECT * FROM `item_list` WHERE `item_category` =
       <h1><?= $inv_title ?> Inventory</h1>
    </div>
    <a class="my-2" href="/wonkyinv/home.php">Back Home</a><br >
-   <?php if($inventory_count == 0) {
+   <?php if($inventoryCountView == 0) {
       echo "You currently do not have any items entered for this category. Either go back home and enter an item or make sure you are selecting a category on the Insert form.";
       echo "<div style=\"display: none\"class=\"row\">";
       } else { 
@@ -58,7 +56,7 @@ $inventory_count = $db->query("SELECT * FROM `item_list` WHERE `item_category` =
                         <th scope="col">Description</th>
                      </thead>
 
-                     <?php foreach ($category_inventory as $v) { ?>
+                     <?php foreach ($categoryInventoryView as $v) { ?>
                         <tr class="table-warning">
                            <td>
                               <?= $v->id ?>

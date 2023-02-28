@@ -27,16 +27,20 @@ if (!empty($_POST)) {
          'description' => Input::get("item_description")
       ];
       
-      if (Input::get("item_category") == 'clay') {
-         $item_fields['item_category'] = '1';
-      } elseif (input::get("item_category") == 'glaze') {
-         $item_fields['item_category'] = '2';
-      } elseif (Input::get('item_category') == 'tools') {
-         $item_fields['item_category'] = '3';
-      } elseif(Input::get('item_category') == 'misc') {
-         $item_fields['item_category'] = '4';
+      if (Input::get("item_category") == ''){
+         dnd("plsease select a category");
       } else {
-         //
+         if (Input::get("item_category") == 'clay') {
+            $item_fields['item_category'] = '1';
+         } elseif (input::get("item_category") == 'glaze') {
+            $item_fields['item_category'] = '2';
+         } elseif (Input::get('item_category') == 'tools') {
+            $item_fields['item_category'] = '3';
+         } elseif(Input::get('item_category') == 'misc') {
+            $item_fields['item_category'] = '4';
+         } else {
+            //
+         }
       }
       
       // ? If the category is stored as numeric in the db, it needs to be retrieved as numeric from the DB and then displayed as text in the view
@@ -81,7 +85,7 @@ function url_for($script_path){
             </div>
          </div>
    </form>
-   <?php dump($_GET) ?>
+   
 </div> -->
 <!-- Category Cards -->
 <div class="row my-3 mx-auto">
@@ -107,12 +111,13 @@ function url_for($script_path){
 <hr class="mx-4">
 <div class="row mx-2">
    <h3 class="text-center my-5">Add to Inventory</h3>
-   <form action="" method="post">
+   
+   <form action="usersc\includes\add_item_process.php" method="POST">
    <input type="hidden" name="csrf" value="<?= Token::generate(); ?>">
       <div class="row">
          <div class="col-4">
             <label class="form-label" for="item_name"><span class="fw-bold">Name</span></label>
-            <input type="text" class="form-control" placeholder="ex. Laguna White-Speckled Clay " name="item_name" aria-label="First name">
+            <input type="text" class="form-control" id="item_name" placeholder="ex. Laguna White-Speckled Clay " name="item_name" aria-label="First name">
          </div>
          
          <div class="col-4">
@@ -129,8 +134,8 @@ function url_for($script_path){
          </div>
          <div class="col-4">
             <label class="form-label" for="item_category"><span class="fw-bold">Item Category</span></label>
-            <select id="inputState" name="item_category" class="form-select">
-               <option selected>Choose...</option>
+            <select id="inputState" name="item_category" id="item_category" class="form-select">
+               <option value='' selected>Choose...</option>
                <option value="clay">Clay</option>
                <option value="glaze">Glazes</option>
                <option value="tools">Tools</option>
@@ -207,3 +212,8 @@ function url_for($script_path){
    </table>
 </div>
 </div>
+
+<?php
+   require_once $abs_us_root . $us_url_root . 'usersc/includes/js/add_item_form.js';
+   require_once $abs_us_root . $us_url_root . 'users/includes/html_footer.php';
+   ?>
